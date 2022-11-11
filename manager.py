@@ -9,7 +9,7 @@ import os
 from asciimatics.widgets import Frame, ListBox, Layout, Divider, \
     Text, Button, TextBox, Widget, CheckBox, PopUpDialog
 from asciimatics.scene import Scene
-from asciimatics.screen import Screen
+from asciimatics.screen import Screen, ManagedScreen
 from asciimatics.event import KeyboardEvent
 from asciimatics.exceptions import ResizeScreenError, NextScene, StopApplication
 import libtmux
@@ -225,19 +225,26 @@ class ContactView(Frame):
         raise NextScene('Main')
 
 
-def main(screen, scene):
-    scenes = [Scene([ListView(screen, connections)], -1, name='Main'),
-              Scene([ContactView(screen, connections)], -1, name='Edit Connection')]
+class ShyySH:
+    def __init__(self):
+        self._connections = ConnectionItem()
+        self._last_scene = None
 
-    screen.play(scenes, stop_on_resize=True, start_scene=scene, allow_int=True)
+    def play(self, screen, scene):
+        scenes = [Scene([ListView(screen, self._connections)], -1, name='Main'),
+                  Scene([ContactView(screen, self._connections)], -1, name='Edit Connection')]
+        screen.play(scenes, stop_on_resize=True, start_scene=scene, allow_int=True)
+
+    @ManagedScreen
+    def run(self, screen=None):
+        while True:
+            try:
+                screen.wrapper(self.play, catch_interrupt=True, arguments=[self._last_scene])
+                sys.exit(0)
+            except ResizeScreenError as e:
+                self._last_scene = e.scene
 
 
-connections = ConnectionItem()
-
-last_scene = None
-while True:
-    try:
-        Screen.wrapper(main, catch_interrupt=True, arguments=[last_scene])
-        sys.exit(0)
-    except ResizeScreenError as e:
-        last_scene = e.scene
+if __name__ == '__main__':
+    app = ShyySH()
+    app.run()
