@@ -6,7 +6,8 @@ TUI
 
 import sys
 import os
-from asciimatics.widgets import Frame, ListBox, Layout, Divider, Text, Button, TextBox, Widget, CheckBox
+from asciimatics.widgets import Frame, ListBox, Layout, Divider, \
+    Text, Button, TextBox, Widget, CheckBox, PopUpDialog
 from asciimatics.scene import Scene
 from asciimatics.screen import Screen
 from asciimatics.event import KeyboardEvent
@@ -63,7 +64,7 @@ class ListView(Frame):
         layout2.add_widget(self._edit_button, 1)
         layout2.add_widget(self._delete_button, 2)
         layout2.add_widget(self._connect_button, 3)
-        layout2.add_widget(Button('[Q]uit ', self._quit), 4)
+        layout2.add_widget(Button('[Q]uit ', self._quit_confirmation), 4)
 
         self.fix()
         self._on_pick()
@@ -120,8 +121,10 @@ class ListView(Frame):
 
     def process_event(self, event):
         if isinstance(event, KeyboardEvent):
-            if event.key_code in [ord('q'), ord('Q'), Screen.ctrl("c")]:
-                self._quit()
+            if event.key_code in [ord('q'), ord('Q')]:
+                self._quit_confirmation()
+            elif event.key_code in [Screen.ctrl("c")]:
+                self._immediate_quit()
             elif event.key_code in [ord('e'), ord('E')]:
                 self._edit()
             elif event.key_code in [ord('a'), ord('A')]:
@@ -133,9 +136,22 @@ class ListView(Frame):
 
         return super().process_event(event)
 
+    def _quit_confirmation(self):
+        self._scene.add_effect(
+            PopUpDialog(self._screen,
+                        'Confirm quit?',
+                        ['Yes', 'No'],
+                        has_shadow=True,
+                        on_close=self._quit))
+
     @staticmethod
-    def _quit():
-        raise StopApplication('User pressed quit')
+    def _quit(value):
+        if value == 0:
+            raise StopApplication('Confirmed quit')
+
+    @staticmethod
+    def _immediate_quit():
+        raise StopApplication('Immediate quit')
 
 
 class ContactView(Frame):
