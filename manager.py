@@ -115,6 +115,19 @@ class ListView(Frame):
         _conn_id = self.data['connections']
         if not _conn_id:
             return
+        self._scene.add_effect(
+            PopUpDialog(self._screen,
+                        'Delete connection?',
+                        ['Yes', 'No'],
+                        has_shadow=True,
+                        on_close=self._delete_confirm))
+
+    def _delete_confirm(self, value):
+        if value != 0:
+            return
+        _conn_id = self.data['connections']
+        if not _conn_id:
+            return
         logger.debug(f'Connection {_conn_id} -- Delete')
         self._model.delete_single(_conn_id)
         self._reload_list()
