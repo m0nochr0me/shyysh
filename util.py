@@ -23,15 +23,16 @@ def make_shell_cmd(conn: dict) -> str:
     """Generate ssh connection command"""
     _ssh = [f'{conn["prepend_cmd"]} ' if conn['prepend_cmd'] else '',
             f'{config["ssh"]["cmd"]} ',
-            f'{conn["user"]}@' if conn['user'] else '',
-            f'{conn["host"]} ',
             f' -p {conn["port"]} ' if conn['port'] else '',
             f' -C ' if conn['compression'] else '',
             f' -X ' if conn['fwd_x'] else '',
             f' -A ' if conn['fwd_a'] else '',
             f' -g ' if conn['allow_rpc'] else '',
             f' -N ' if conn['no_exec'] else '',
-            f' {conn["custom_opt"] }' if conn['custom_opt'] else '']
+            f' {conn["custom_opt"] }' if conn['custom_opt'] else '',
+            ' ',
+            f'{conn["user"]}@' if conn['user'] else '',
+            f'{conn["host"]} ']
 
     _r = ''.join(_ssh)
     return ' '.join(_r.split())  # to remove duplicate spaces
