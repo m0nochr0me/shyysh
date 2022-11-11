@@ -2,6 +2,11 @@
 
 Secure Shell (SSH) connection manager with TUI
 
+<p align="center">
+<img alt="screenshot0" src="https://user-images.githubusercontent.com/31232338/201325494-ceb243c7-c72b-4ed5-9c11-7c9c33465cae.png" width="400"/>
+<img alt="screenshot1" src="https://user-images.githubusercontent.com/31232338/201325631-94eded7a-24bb-4f8e-8e1e-d9f3f9bc3529.png" width="400"/>
+</p>
+
 ## Stack
 
 * Python 3.9+
