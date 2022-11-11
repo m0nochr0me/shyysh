@@ -6,3 +6,7 @@ ssh:
 
 tui:
   theme: 'tlj256'  # bright, green, monochrome, tlj256
+
+log:
+  dir: ''
+  level: 10

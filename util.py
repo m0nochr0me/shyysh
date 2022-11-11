@@ -7,7 +7,7 @@ from __future__ import annotations
 import os
 import libtmux
 from libtmux.exc import LibTmuxException
-from confmaker import config
+from core import config
 
 
 def get_current_pane(srv: libtmux.server.Server) -> dict | None:

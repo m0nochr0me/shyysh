@@ -14,7 +14,7 @@ from asciimatics.exceptions import ResizeScreenError, NextScene, StopApplication
 import libtmux
 from libtmux.exc import LibTmuxException
 
-from confmaker import config
+from core import config, logger
 from util import get_current_pane, make_shell_cmd
 from models import ConnectionItem
 
@@ -30,7 +30,8 @@ class ListView(Frame):
         self._tmux_server = libtmux.Server()
         self._pane = get_current_pane(self._tmux_server)
         if not self._pane:
-            raise Exception('Cannot run outside tmux')
+            logger.critical('Please start using run.py')
+            raise Exception('Tmux not found')
         self._session = self._tmux_server.find_where({'session_id': self._pane['session_id']})
 
         # Widgets
@@ -75,6 +76,7 @@ class ListView(Frame):
         self._model.cursor = _conn_id
         _conn = self._model.get_current(as_dict=True)
         _conn_cmd = make_shell_cmd(_conn)
+        logger.debug(f'Connecting to {_conn_id} -- "{_conn_cmd}"')
         self._session.new_window(f'{_conn["title"]}', attach=True,
                                  window_shell=_conn_cmd)
 
@@ -103,6 +105,7 @@ class ListView(Frame):
         _conn_id = self.data['connections']
         if not _conn_id:
             return
+        logger.debug(f'Connection {_conn_id} -- Edit')
         self._model.cursor = _conn_id
         raise NextScene('Edit Connection')
 
@@ -111,6 +114,7 @@ class ListView(Frame):
         _conn_id = self.data['connections']
         if not _conn_id:
             return
+        logger.debug(f'Connection {_conn_id} -- Delete')
         self._model.delete_single(_conn_id)
         self._reload_list()
 
