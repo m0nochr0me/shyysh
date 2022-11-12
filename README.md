@@ -20,8 +20,19 @@ Ensure you have installed [tmux](https://github.com/tmux/tmux) in your os.
 
 Install python packages from `requirements.txt`
 
+
+#### Build 
+
 ```commandline
-python run.py
+python setup.py build
+
+python setup.py install
+```
+
+#### Run
+
+```commandline
+shyysh
 ```
 
 While being run outside existing tmux session it will start one, 
