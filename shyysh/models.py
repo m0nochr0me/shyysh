@@ -4,7 +4,7 @@ ShyySH
 Models
 """
 from tinydb import TinyDB
-from core import config, logger
+from shyysh.core import config, logger
 
 
 class ConnectionItem:

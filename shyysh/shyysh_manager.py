@@ -16,9 +16,9 @@ from asciimatics.exceptions import ResizeScreenError, NextScene, StopApplication
 import libtmux
 from libtmux.exc import LibTmuxException
 
-from core import config, logger
-from util import get_current_pane, make_shell_cmd
-from models import ConnectionItem
+from shyysh.core import config, logger
+from shyysh.util import get_current_pane, make_shell_cmd
+from shyysh.models import ConnectionItem
 
 
 class ListView(Frame):

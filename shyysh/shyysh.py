@@ -8,8 +8,8 @@ Entry point
 import libtmux
 from pathlib import Path
 
-from util import get_current_pane
-from core import logger
+from shyysh.util import get_current_pane
+from shyysh.core import logger
 
 
 def main():
