@@ -16,7 +16,8 @@ setup(
     description="TUI SSH Connection manager",
     long_description=long_description,
     packages=find_packages("."),
-    package_data={"shyysh": ["py.typed"]},
+    include_package_data=True,
+    package_data={"shyysh": ["config.default.yaml"]},
     install_requires=[
         "tinydb>=4.7.0",
         "libtmux>=0.15.0",
