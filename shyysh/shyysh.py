@@ -14,8 +14,7 @@ from shyysh.core import logger
 
 def main():
     logger.info('Shyysh starting')
-    _shell_dir = Path(__file__).resolve().parent
-    _shell_cmd = str(_shell_dir / 'shyysh_manager.py')
+    _shell_cmd = 'shyysh_manager'
     _app_name = 'shyysh'
 
     _tmux_server = libtmux.Server()
