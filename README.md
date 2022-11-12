@@ -14,14 +14,19 @@ Secure Shell (SSH) connection manager with TUI
 * [libtmux](https://libtmux.git-pull.com/)
 * [TinyDB](https://github.com/msiemens/tinydb)
 
-## Usage
+## Install
+
+### Archlinux
+
+```commandline
+yay -S shyysh
+```
+
+### Manual 
 
 Ensure you have installed [tmux](https://github.com/tmux/tmux) in your os.
 
 Install python packages from `requirements.txt`
-
-
-#### Build 
 
 ```commandline
 python setup.py build
@@ -29,7 +34,7 @@ python setup.py build
 python setup.py install
 ```
 
-#### Run
+## Run
 
 ```commandline
 shyysh
@@ -42,6 +47,8 @@ otherwise shyysh will be started in newly created tmux window.
 
 Validation in 'Connection Edit' frame is for informational purposes only - it will not disallow 
 saving unexecutable profiles.
+
+Default location for config file and DB: `~/.config/shyysh`
 
 ## Why ShyySH?
 
