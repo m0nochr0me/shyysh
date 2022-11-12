@@ -1,3 +1,4 @@
+#!/usr/bin/env python
 """
 ShyySH
 
@@ -31,7 +32,7 @@ class ListView(Frame):
         self._tmux_server = libtmux.Server()
         self._pane = get_current_pane(self._tmux_server)
         if not self._pane:
-            logger.critical('Please start using run.py')
+            logger.critical('Please start using shyysh.py')
             raise Exception('Tmux not found')
         self._session = self._tmux_server.find_where({'session_id': self._pane['session_id']})
 
@@ -227,6 +228,7 @@ class ContactView(Frame):
 
 class ShyySH:
     def __init__(self):
+        logger.info('Shyysh manager init')
         self._connections = ConnectionItem()
         self._last_scene = None
 
@@ -245,6 +247,10 @@ class ShyySH:
                 self._last_scene = e.scene
 
 
-if __name__ == '__main__':
+def main():
     app = ShyySH()
     app.run()
+
+
+if __name__ == '__main__':
+    main()
