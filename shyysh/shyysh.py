@@ -1,3 +1,4 @@
+#!/usr/bin/env python
 """
 ShyySH
 
@@ -5,14 +6,16 @@ Entry point
 """
 
 import libtmux
+from pathlib import Path
 
 from util import get_current_pane
-from core import config, logger
+from core import logger
 
 
 def main():
     logger.info('Shyysh starting')
-    _shell_cmd = 'python manager.py'
+    _shell_dir = Path(__file__).resolve().parent
+    _shell_cmd = str(_shell_dir / 'shyysh_manager.py')
     _app_name = 'shyysh'
 
     _tmux_server = libtmux.Server()

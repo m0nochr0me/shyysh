@@ -16,7 +16,7 @@ if not _conf_dir.is_dir():
 
 _conf_file = _conf_dir / 'config.yaml'
 if not _conf_file.is_file():
-    _conf_default = Path.cwd() / 'config.default.yaml'
+    _conf_default = Path(__file__).resolve().parent / 'config.default.yaml'
     shutil.copy(_conf_default, _conf_file)
 
 with open(_conf_file, mode='r', encoding='utf-8') as f:
