@@ -5,8 +5,8 @@ ssh:
   cmd: 'ssh'
 
 tui:
-  theme: 'tlj256'  # bright, green, monochrome, tlj256
+  theme: 'monochrome'  # bright, green, monochrome, tlj256
 
 log:
   dir: ''
-  level: 10
+  level: 50
