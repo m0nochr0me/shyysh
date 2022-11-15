@@ -9,6 +9,7 @@ import shutil
 from pathlib import Path
 import logging
 
+__all__ = ['config', 'logger']
 
 _conf_dir = Path(Path.home() / '.config/shyysh')
 if not _conf_dir.is_dir():

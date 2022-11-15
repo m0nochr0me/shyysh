@@ -32,7 +32,7 @@ class ListView(Frame):
         self._tmux_server = libtmux.Server()
         self._pane = get_current_pane(self._tmux_server)
         if not self._pane:
-            logger.critical('Please start using shyysh.py')
+            logger.critical('Please start using shyysh_main.py')
             raise Exception('Tmux not found')
         self._session = self._tmux_server.find_where({'session_id': self._pane['session_id']})
 

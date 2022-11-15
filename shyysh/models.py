@@ -6,6 +6,8 @@ Models
 from tinydb import TinyDB
 from shyysh.core import config, logger
 
+__all__ = ['ConnectionItem']
+
 
 class ConnectionItem:
     def __init__(self):

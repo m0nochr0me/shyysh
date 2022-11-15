@@ -33,7 +33,7 @@ setup(
     ],
     entry_points={
         "console_scripts": [
-            "shyysh = shyysh.shyysh:main",
+            "shyysh = shyysh.shyysh_main:main",
             "shyysh_manager = shyysh.shyysh_manager:main",
         ]
     }
