@@ -48,6 +48,7 @@ class ListView(Frame):
             on_select=self._connect)
 
         self._edit_button = Button('[E]dit', self._edit)
+        self._copy_button = Button('C[o]py', self._copy)
         self._delete_button = Button('[D]elete', self._delete)
         self._connect_button = Button('[C]onnect', self._connect)
         self._info_panel = Text('', readonly=True)
@@ -59,13 +60,14 @@ class ListView(Frame):
         layout.add_widget(self._info_panel)
         layout.add_widget(Divider())
 
-        layout2 = Layout([1, 1, 1, 2, 1])
+        layout2 = Layout([1, 1, 1, 1, 2, 1])
         self.add_layout(layout2)
         layout2.add_widget(Button('[A]dd', self._add), 0)
-        layout2.add_widget(self._edit_button, 1)
-        layout2.add_widget(self._delete_button, 2)
-        layout2.add_widget(self._connect_button, 3)
-        layout2.add_widget(Button('[Q]uit ', self._quit_confirmation), 4)
+        layout2.add_widget(self._copy_button, 1)
+        layout2.add_widget(self._edit_button, 2)
+        layout2.add_widget(self._delete_button, 3)
+        layout2.add_widget(self._connect_button, 4)
+        layout2.add_widget(Button('[Q]uit ', self._quit_confirmation), 5)
 
         self.fix()
         self._on_pick()
@@ -85,6 +87,7 @@ class ListView(Frame):
     def _on_pick(self):
         _value = self._list_view.value
         self._edit_button.disabled = _value is None
+        self._copy_button.disabled = _value is None
         self._delete_button.disabled = _value is None
         self._connect_button.disabled = _value is None
         if _value:
@@ -111,6 +114,17 @@ class ListView(Frame):
         logger.debug(f'Connection {_conn_id} -- Edit')
         self._model.cursor = _conn_id
         raise NextScene('Edit Connection')
+
+    def _copy(self):
+        self.save()
+        _conn_id = self.data['connections']
+        if not _conn_id:
+            return
+        logger.debug(f'Connection {_conn_id} -- Copy')
+        _conn = self._model.get(doc_id=_conn_id, as_dict=True)
+        _conn['title'] += ' #copy'
+        self._model.add(_conn)
+        self._reload_list()
 
     def _delete(self):
         self.save()
@@ -148,6 +162,8 @@ class ListView(Frame):
                 self._delete()
             elif event.key_code in [ord('c'), ord('C')]:
                 self._connect()
+            elif event.key_code in [ord('o'), ord('O')]:
+                self._copy()
 
         return super().process_event(event)
 
