@@ -169,11 +169,11 @@ class ListView(Frame):
         raise StopApplication('Immediate quit')
 
 
-class ContactView(Frame):
+class ConnectionView(Frame):
     def __init__(self, screen, model):
         super().__init__(screen,
-                         screen.height * 2 // 3,
-                         screen.width * 2 // 3,
+                         screen.height * 5 // 6,
+                         screen.width * 7 // 8,
                          hover_focus=True,
                          can_scroll=False,
                          title='Connection Details',
@@ -237,7 +237,7 @@ class ShyySH:
 
     def play(self, screen, scene):
         scenes = [Scene([ListView(screen, self._connections)], -1, name='Main'),
-                  Scene([ContactView(screen, self._connections)], -1, name='Edit Connection')]
+                  Scene([ConnectionView(screen, self._connections)], -1, name='Edit Connection')]
         screen.play(scenes, stop_on_resize=True, start_scene=scene, allow_int=True)
 
     @ManagedScreen
