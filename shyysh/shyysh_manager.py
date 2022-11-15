@@ -208,7 +208,7 @@ class ConnectionView(Frame):
         self.fix()
 
     def reset(self):
-        super(ContactView, self).reset()
+        super(ConnectionView, self).reset()
         self.data = self._model.get_current()
 
     def _ok(self):
