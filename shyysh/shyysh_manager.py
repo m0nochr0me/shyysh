@@ -95,6 +95,7 @@ class ListView(Frame):
             self._info_panel.value = ' '
 
     def _reload_list(self, new_value=None):
+        self._model.reorder()
         self._list_view.options = self._model.summary()
         self._list_view.value = new_value
 
@@ -196,8 +197,9 @@ class ContactView(Frame):
         layout.add_widget(CheckBox('-N', 'No exec', 'no_exec'))
         layout.add_widget(Divider(height=2))
         layout.add_widget(Text('Custom options:', 'custom_opt'))
-        layout.add_widget(Divider(height=2))
         layout.add_widget(Text('Prepend command:', 'prepend_cmd'))
+        layout.add_widget(Divider(height=2))
+        layout.add_widget(Text('Sort order:', 'sort', validator=r'^(\d){0,4}$|^$'))
 
         layout2 = Layout([1, 1, 1, 1])
         self.add_layout(layout2)
@@ -212,6 +214,7 @@ class ContactView(Frame):
     def _ok(self):
         self.save()
         self._model.update_current(self.data)
+        self._model.reorder()
         raise NextScene('Main')
 
     def process_event(self, event):

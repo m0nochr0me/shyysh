@@ -23,7 +23,8 @@ class ConnectionItem:
             'allow_rpc': False,
             'no_exec': False,
             'custom_opt': '',
-            'prepend_cmd': ''
+            'prepend_cmd': '',
+            'sort': '1000'
         }
         self.cursor = None
 
@@ -69,3 +70,20 @@ class ConnectionItem:
         for item in self.all():
             _r.append((item['title'], item.doc_id))
         return _r
+
+    def reorder(self):
+        _items = self.all()
+
+        def _sort(item):
+            try:
+                _s = int(item['sort'])
+            except Exception as e:
+                logger.error(e)
+                _s = 1000
+            return _s
+
+        _items.sort(key=lambda i: _sort(i))
+
+        self._db.drop_tables()
+        self._db.insert_multiple(_items)
+        self.cursor = None
