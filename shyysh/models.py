@@ -11,13 +11,19 @@ __all__ = ['ConnectionItem']
 
 class ConnectionItem:
     def __init__(self):
-        self._db = TinyDB(config['db']['path'])
+        self._db = TinyDB(config['db']['path'], sort_keys=False, indent=2, separators=(',', ': '))
         self._default = {
             'title': '',
             'user': '',
             'host': '',
             'port': '',
             'compression': False,
+            'allow_rpc': False,
+            'fwd_x': False,
+            'fwd_a': False,
+            'no_exec': False,
+            'custom_opt': '',
+            'prepend_cmd': ''
         }
         self.cursor = None
 
