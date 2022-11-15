@@ -18,9 +18,9 @@ class ConnectionItem:
             'host': '',
             'port': '',
             'compression': False,
-            'allow_rpc': False,
             'fwd_x': False,
             'fwd_a': False,
+            'allow_rpc': False,
             'no_exec': False,
             'custom_opt': '',
             'prepend_cmd': ''
