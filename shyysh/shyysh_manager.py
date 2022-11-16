@@ -214,6 +214,7 @@ class ConnectionView(Frame):
         layout.add_widget(Divider(height=2))
         layout.add_widget(Text('Custom options:', 'custom_opt'))
         layout.add_widget(Text('Prepend command:', 'prepend_cmd'))
+        layout.add_widget(Text('Append command:', 'append_cmd'))
         layout.add_widget(Divider(height=2))
         layout.add_widget(Text('Sort order:', 'sort', validator=r'^(\d){0,4}$|^$'))
 
@@ -225,7 +226,7 @@ class ConnectionView(Frame):
 
     def reset(self):
         super(ConnectionView, self).reset()
-        self.data = self._model.get_current()
+        self.data = self._model.get_current(as_dict=True)
 
     def _ok(self):
         self.save()

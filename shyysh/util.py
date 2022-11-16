@@ -32,7 +32,8 @@ def make_shell_cmd(conn: dict) -> str:
             f' {conn["custom_opt"] }' if conn['custom_opt'] else '',
             ' ',
             f'{conn["user"]}@' if conn['user'] else '',
-            f'{conn["host"]} ']
+            f'{conn["host"]} ',
+            f'{conn["append_cmd"]} ' if conn['append_cmd'] else '']
 
     _r = ''.join(_ssh)
     return ' '.join(_r.split())  # to remove duplicate spaces

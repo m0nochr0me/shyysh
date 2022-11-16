@@ -24,6 +24,7 @@ class ConnectionItem:
             'no_exec': False,
             'custom_opt': '',
             'prepend_cmd': '',
+            'append_cmd': '',
             'sort': '1000'
         }
         self.cursor = None
@@ -47,7 +48,7 @@ class ConnectionItem:
     def get(self, doc_id: int, as_dict=False):
         _r = self._db.get(doc_id=doc_id)
         if as_dict:
-            return dict(_r)
+            return {**self._default, **dict(_r)}
         return _r
 
     def get_current(self, as_dict=False):
