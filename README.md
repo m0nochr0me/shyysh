@@ -3,8 +3,8 @@
 Secure Shell (SSH) connection manager with TUI
 
 <p align="center">
-<img alt="screenshot0" src="https://user-images.githubusercontent.com/31232338/201325494-ceb243c7-c72b-4ed5-9c11-7c9c33465cae.png" width="400"/>
-<img alt="screenshot1" src="https://user-images.githubusercontent.com/31232338/201325631-94eded7a-24bb-4f8e-8e1e-d9f3f9bc3529.png" width="400"/>
+<img alt="screenshot0" src="https://user-images.githubusercontent.com/31232338/202361474-9625c22d-d6f2-499c-afed-b35c9e288158.png" width="400"/>
+<img alt="screenshot1" src="https://user-images.githubusercontent.com/31232338/202361517-97c532b0-c30f-45a5-9236-9da72f0525f5.png" width="400"/>
 </p>
 
 ## Stack
@@ -45,6 +45,9 @@ otherwise shyysh will be started in newly created tmux window.
 
 ## Notes
 
+You may want to change default command key binding in `tmux.conf` to avoid conflicts when tmux session 
+being run inside another.
+
 Validation in 'Connection Edit' frame is for informational purposes only - it will not disallow 
 saving unexecutable profiles.
 
@@ -62,5 +65,3 @@ Default location for config file and DB: `~/.config/shyysh`
 ## Issues
 
 - Sometimes terminal color scheme is being reset when resizing window.
-
-- Phantomly set options in 'Add Connection' frame after deleting connection profile.
