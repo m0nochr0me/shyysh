@@ -24,6 +24,8 @@ with open(_conf_file, mode='r', encoding='utf-8') as f:
     config = yaml.safe_load(f)
 
 if not config['db']['path']:
+    _db_path = _conf_dir / 'connections.db'
+    _db_path.touch(exist_ok=True)
     config['db']['path'] = str(_conf_dir / 'connections.db')
 
 if not config['log']['dir']:

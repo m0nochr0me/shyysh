@@ -3,15 +3,37 @@ ShyySH
 
 Models
 """
-from tinydb import TinyDB
+
+import yaml
+from tinydb import TinyDB, Storage
 from shyysh.core import config, logger
 
 __all__ = ['ConnectionItem']
 
 
+class YAMLStorage(Storage):
+    def __init__(self, filename):
+        self.filename = filename
+
+    def read(self):
+        with open(self.filename) as handle:
+            try:
+                data = yaml.safe_load(handle.read())
+                return data
+            except yaml.YAMLError:
+                return None
+
+    def write(self, data):
+        with open(self.filename, 'w+') as handle:
+            yaml.dump(data, handle, sort_keys=False, allow_unicode=True)
+
+    def close(self):
+        pass
+
+
 class ConnectionItem:
     def __init__(self):
-        self._db = TinyDB(config['db']['path'], sort_keys=False, indent=2, separators=(',', ': '))
+        self._db = TinyDB(config['db']['path'], storage=YAMLStorage)
         self._default = {
             'title': '',
             'user': '',
