@@ -11,7 +11,7 @@ with open(os.path.join(os.path.dirname(__file__), "README.md")) as f:
 setup(
     name="shyysh",
     author="Viktor Tereshchenko",
-    version="0.0.5",
+    version="0.0.6",
     url="https://github.com/m0nochr0me/shyysh",
     description="TUI SSH Connection manager",
     long_description=long_description,
