@@ -6,15 +6,13 @@ TUI
 """
 
 import sys
-import os
 from asciimatics.widgets import Frame, ListBox, Layout, Divider, \
-    Text, Button, TextBox, Widget, CheckBox, PopUpDialog
+     Text, Button, Widget, CheckBox, PopUpDialog
 from asciimatics.scene import Scene
 from asciimatics.screen import Screen, ManagedScreen
 from asciimatics.event import KeyboardEvent
 from asciimatics.exceptions import ResizeScreenError, NextScene, StopApplication
 import libtmux
-from libtmux.exc import LibTmuxException
 
 from shyysh.core import config, logger
 from shyysh.util import get_current_pane, make_shell_cmd
@@ -39,13 +37,9 @@ class ListView(Frame):
         # Widgets
         self.set_theme(config['tui']['theme'])
 
-        self._list_view = ListBox(
-            height=Widget.FILL_FRAME,
-            options=self._model.summary(),
-            name='connections',
-            add_scroll_bar=True,
-            on_change=self._on_pick,
-            on_select=self._connect)
+        self._list_view = ListBox(height=Widget.FILL_FRAME, options=self._model.summary(),
+                                  name='connections', add_scroll_bar=True,
+                                  on_change=self._on_pick, on_select=self._connect)
 
         self._edit_button = Button('[E]dit', self._edit)
         self._copy_button = Button('C[o]py', self._copy)
@@ -75,14 +69,15 @@ class ListView(Frame):
     def _connect(self):
         self.save()
         _conn_id = self.data['connections']
+
         if not _conn_id:
             return
+
         self._model.cursor = _conn_id
         _conn = self._model.get_current(as_dict=True)
         _conn_cmd = make_shell_cmd(_conn)
         logger.debug(f'Connecting to {_conn_id} -- "{_conn_cmd}"')
-        self._session.new_window(f'{_conn["title"]}', attach=True,
-                                 window_shell=_conn_cmd)
+        self._session.new_window(f'{_conn["title"]}', attach=True, window_shell=_conn_cmd)
 
     def _on_pick(self):
         _value = self._list_view.value
@@ -90,6 +85,7 @@ class ListView(Frame):
         self._copy_button.disabled = _value is None
         self._delete_button.disabled = _value is None
         self._connect_button.disabled = _value is None
+
         if _value:
             _conn = self._model.get(_value, as_dict=True)
             _conn_cmd = make_shell_cmd(_conn)
@@ -109,8 +105,10 @@ class ListView(Frame):
     def _edit(self):
         self.save()
         _conn_id = self.data['connections']
+
         if not _conn_id:
             return
+
         logger.debug(f'Connection {_conn_id} -- Edit')
         self._model.cursor = _conn_id
         raise NextScene('Edit Connection')
@@ -118,8 +116,10 @@ class ListView(Frame):
     def _copy(self):
         self.save()
         _conn_id = self.data['connections']
+
         if not _conn_id:
             return
+
         logger.debug(f'Connection {_conn_id} -- Copy')
         _conn = self._model.get(doc_id=_conn_id, as_dict=True)
         _conn['title'] += ' #copy'
@@ -129,21 +129,22 @@ class ListView(Frame):
     def _delete(self):
         self.save()
         _conn_id = self.data['connections']
+
         if not _conn_id:
             return
+
         self._scene.add_effect(
-            PopUpDialog(self._screen,
-                        'Delete connection?',
-                        ['Yes', 'No'],
-                        has_shadow=True,
-                        on_close=self._delete_confirm))
+            PopUpDialog(self._screen, 'Delete connection?', ['Yes', 'No'],
+                        has_shadow=True, on_close=self._delete_confirm))
 
     def _delete_confirm(self, value):
         if value != 0:
             return
         _conn_id = self.data['connections']
+
         if not _conn_id:
             return
+
         logger.debug(f'Connection {_conn_id} -- Delete')
         self._model.delete_single(_conn_id)
         self._reload_list()
@@ -169,11 +170,8 @@ class ListView(Frame):
 
     def _quit_confirmation(self):
         self._scene.add_effect(
-            PopUpDialog(self._screen,
-                        'Confirm quit?',
-                        ['Yes', 'No'],
-                        has_shadow=True,
-                        on_close=self._quit))
+            PopUpDialog(self._screen, 'Confirm quit?', ['Yes', 'No'],
+                        has_shadow=True, on_close=self._quit))
 
     @staticmethod
     def _quit(value):
@@ -187,13 +185,8 @@ class ListView(Frame):
 
 class ConnectionView(Frame):
     def __init__(self, screen, model):
-        super().__init__(screen,
-                         screen.height * 5 // 6,
-                         screen.width * 7 // 8,
-                         hover_focus=True,
-                         can_scroll=False,
-                         title='Connection Details',
-                         reduce_cpu=True)
+        super().__init__(screen, screen.height * 5 // 6, screen.width * 7 // 8,
+                         hover_focus=True, can_scroll=False, title='Connection Details', reduce_cpu=True)
 
         self.set_theme(config['tui']['theme'])
 

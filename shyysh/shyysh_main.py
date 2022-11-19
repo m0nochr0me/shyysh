@@ -6,7 +6,6 @@ Entry point
 """
 
 import libtmux
-from pathlib import Path
 
 from shyysh.util import get_current_pane
 from shyysh.core import logger
