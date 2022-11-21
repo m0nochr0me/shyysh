@@ -19,7 +19,7 @@ Secure Shell (SSH) connection manager with TUI
 ### Archlinux
 
 ```commandline
-yay -S shyysh
+yay -S shyysh-git
 ```
 
 ### Manual 
@@ -46,10 +46,20 @@ otherwise shyysh will be started in newly created tmux window.
 ## Notes
 
 You may want to change default command key binding in `tmux.conf` to avoid conflicts when tmux session 
-being run inside another.
+being run inside another:
+
+```
+unbind C-b
+set -g prefix C-a
+bind C-a send-prefix
+```
+
+---
 
 Validation in 'Connection Edit' frame is for informational purposes only - it will not disallow 
 saving unexecutable profiles.
+
+---
 
 Default location for config file and DB: `~/.config/shyysh`
 
