@@ -62,6 +62,7 @@ class ConnectionItem:
 
     def delete(self, doc_ids: tuple[int]):
         self._db.remove(doc_ids=doc_ids)
+        self.reorder()
 
     def delete_single(self, doc_id: int):
         self.delete(doc_ids=(doc_id,))
@@ -85,7 +86,8 @@ class ConnectionItem:
             _r = self.update(doc_ids=(self.cursor,), data=data)[0]
         else:
             _r = self.add(data=data)
-            self.cursor = _r
+        self.reorder()
+        self.cursor = _r
         return self.cursor
 
     def summary(self):
