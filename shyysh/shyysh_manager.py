@@ -197,17 +197,17 @@ class ConnectionView(Frame):
         layout.add_widget(Text('User:', 'user', validator=r'^([A-Za-z0-9].*)$|^$'))
         layout.add_widget(Text('Host:', 'host', validator=r'^(\S*)$'))
         layout.add_widget(Text('Port:', 'port', validator=r'^(6553[0-5]|655[0-2]\d|65[0-4]\d\d|6[0-4]\d{3}|[1-5]\d{4}|[1-9]\d{0,3}|0)$|^$'))
-        layout.add_widget(Divider(height=2))
+        layout.add_widget(Divider())
         layout.add_widget(CheckBox('-C', 'Compression', 'compression'))
         layout.add_widget(CheckBox('-X', 'Forward X', 'fwd_x'))
         layout.add_widget(CheckBox('-A', 'Forward Agent', 'fwd_a'))
         layout.add_widget(CheckBox('-g', 'Allow Remote Port Conn', 'allow_rpc'))
         layout.add_widget(CheckBox('-N', 'No exec', 'no_exec'))
-        layout.add_widget(Divider(height=2))
+        layout.add_widget(Divider())
         layout.add_widget(Text('Custom options:', 'custom_opt'))
         layout.add_widget(Text('Prepend command:', 'prepend_cmd'))
         layout.add_widget(Text('Append command:', 'append_cmd'))
-        layout.add_widget(Divider(height=2))
+        layout.add_widget(Divider(height=3))
         layout.add_widget(Text('Sort order:', 'sort', validator=r'^(\d){0,4}$|^$'))
 
         layout2 = Layout([1, 1, 1, 1])
@@ -217,7 +217,7 @@ class ConnectionView(Frame):
         self.fix()
 
     def reset(self):
-        super(ConnectionView, self).reset()
+        super().reset()
         self.data = self._model.get_current(as_dict=True)
 
     def _ok(self):

@@ -66,7 +66,6 @@ class ConnectionItem:
 
     def delete_single(self, doc_id: int):
         self.delete(doc_ids=(doc_id,))
-        return True
 
     def get(self, doc_id: int, as_dict=False):
         _r = self._db.get(doc_id=doc_id)
