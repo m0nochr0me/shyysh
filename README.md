@@ -7,6 +7,8 @@ Secure Shell (SSH) connection manager with TUI
 <img alt="screenshot1" src="https://user-images.githubusercontent.com/31232338/202361517-97c532b0-c30f-45a5-9236-9da72f0525f5.png" width="400"/>
 </p>
 
+![GitHub](https://img.shields.io/github/license/m0nochr0me/shyysh?style=flat-square) ![GitHub last commit](https://img.shields.io/github/last-commit/m0nochr0me/shyysh?style=flat-square) ![AUR version](https://img.shields.io/aur/version/shyysh-git?style=flat-square)
+
 ## Stack
 
 * Python 3.9+
