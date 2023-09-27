@@ -8,7 +8,7 @@ import yaml
 from tinydb import TinyDB, Storage
 from shyysh.core import config, logger
 
-__all__ = ['ConnectionItem']
+__all__ = ["ConnectionItem"]
 
 
 class YAMLStorage(Storage):
@@ -24,7 +24,7 @@ class YAMLStorage(Storage):
                 return None
 
     def write(self, data):
-        with open(self.filename, 'w+') as handle:
+        with open(self.filename, "w+") as handle:
             yaml.dump(data, handle, sort_keys=False, allow_unicode=True)
 
     def close(self):
@@ -33,21 +33,21 @@ class YAMLStorage(Storage):
 
 class ConnectionItem:
     def __init__(self):
-        self._db = TinyDB(config['db']['path'], storage=YAMLStorage)
+        self._db = TinyDB(config["db"]["path"], storage=YAMLStorage)
         self._default = {
-            'title': '',
-            'user': '',
-            'host': '',
-            'port': '',
-            'compression': False,
-            'fwd_x': False,
-            'fwd_a': False,
-            'allow_rpc': False,
-            'no_exec': False,
-            'custom_opt': '',
-            'prepend_cmd': '',
-            'append_cmd': '',
-            'sort': '1000'
+            "title": "",
+            "user": "",
+            "host": "",
+            "port": "",
+            "compression": False,
+            "fwd_x": False,
+            "fwd_a": False,
+            "allow_rpc": False,
+            "no_exec": False,
+            "custom_opt": "",
+            "prepend_cmd": "",
+            "append_cmd": "",
+            "sort": "1000",
         }
         self.cursor = None
 
@@ -92,7 +92,7 @@ class ConnectionItem:
     def summary(self):
         _r = []
         for item in self.all():
-            _r.append((item['title'], item.doc_id))
+            _r.append((item["title"], item.doc_id))
         return _r
 
     def reorder(self):
@@ -100,7 +100,7 @@ class ConnectionItem:
 
         def _sort(item):
             try:
-                _s = int(item['sort'])
+                _s = int(item["sort"])
             except Exception as e:
                 logger.error(e)
                 _s = 1000
