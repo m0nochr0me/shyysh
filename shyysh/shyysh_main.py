@@ -21,7 +21,7 @@ def main():
 
     if _pane:
         logger.debug('Tmux pane found')
-        _session = _tmux_server.find_where({'session_id': _pane['session_id']})
+        _session = _tmux_server.sessions.get(session_id=_pane["session_id"])
         _session.new_window(_app_name, attach=True, window_shell=_shell_cmd)
         _session.switch_client()
     else:

@@ -15,7 +15,7 @@ def get_current_pane(srv: libtmux.server.Server) -> dict | None:
     """Returns current tmux pane if any"""
     if os.getenv('TMUX_PANE') is not None:
         try:
-            return [p for p in srv._list_panes() if p.get('pane_id') == os.getenv('TMUX_PANE')][0]  # noqa
+            return [p for p in [pane.__dict__ for pane in srv.panes] if p.get('pane_id') == os.getenv('TMUX_PANE')][0]
         except IndexError:
             ...
 

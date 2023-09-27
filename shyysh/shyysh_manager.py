@@ -32,7 +32,7 @@ class ListView(Frame):
         if not self._pane:
             logger.critical('Please start using shyysh_main.py')
             raise Exception('Tmux not found')
-        self._session = self._tmux_server.find_where({'session_id': self._pane['session_id']})
+        self._session = self._tmux_server.sessions.get(session_id=self._pane["session_id"])
 
         # Widgets
         self.set_theme(config['tui']['theme'])
