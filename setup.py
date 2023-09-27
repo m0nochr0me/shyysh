@@ -10,7 +10,7 @@ with open(os.path.join(os.path.dirname(__file__), "README.md")) as f:
 setup(
     name="shyysh",
     author="Viktor Tereshchenko",
-    version="0.0.6",
+    version="0.0.7",
     url="https://github.com/m0nochr0me/shyysh",
     description="TUI SSH Connection manager",
     long_description=long_description,
@@ -19,7 +19,7 @@ setup(
     package_data={"shyysh": ["config.default.yaml"]},
     install_requires=[
         "tinydb>=4.7.0",
-        "libtmux>=0.15.0",
+        "libtmux>=0.17.0",
         "asciimatics>=1.14.0",
         "PyYAML>=6.0",
     ],
