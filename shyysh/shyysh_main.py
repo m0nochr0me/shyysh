@@ -32,7 +32,7 @@ def main():
             window_name=_app_name,
             window_command=_shell_cmd,
         )
-        _session.attach_session()
+        _session.attach()
 
 
 if __name__ == "__main__":
