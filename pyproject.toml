@@ -1,0 +1,27 @@
+[project]
+name = "shyysh"
+version = "0.0.8"
+description = "A TUI tool to manage SSH connections in tmux"
+readme = "README.md"
+requires-python = ">=3.14"
+dependencies = [
+    "asciimatics>=1.15.0",
+    "libtmux>=0.53.0",
+    "pyyaml>=6.0.3",
+    "setuptools>=82.0.0",
+    "tinydb>=4.8.2",
+]
+[tool.ruff]
+line-length = 120
+indent-width = 4
+target-version = "py311"
+
+[tool.ruff.lint]
+ignore = ["TC001", "TC002", "TC003", "E501"]
+unfixable = ["TC"]
+
+[tool.ruff.format]
+quote-style = "double"
+indent-style = "space"
+skip-magic-trailing-comma = false
+line-ending = "auto"
