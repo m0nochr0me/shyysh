@@ -2,7 +2,7 @@
 pkgname="shyysh-git"
 _gitpkg="shyysh"
 _gitcommit="3b9188d1a8f0db827f55fab97bc8b6aa84b5c592"
-pkgver="0.0.5"
+pkgver="0.0.7.1"
 pkgrel="1"
 pkgdesc="TUI SSH Connection Manager"
 arch=("any")
