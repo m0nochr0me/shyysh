@@ -11,6 +11,11 @@ dependencies = [
     "setuptools>=82.0.0",
     "tinydb>=4.8.2",
 ]
+
+[project.scripts]
+shyysh = "shyysh.shyysh_main:main"
+shyysh_manager = "shyysh.shyysh_manager:main"
+
 [tool.ruff]
 line-length = 120
 indent-width = 4
