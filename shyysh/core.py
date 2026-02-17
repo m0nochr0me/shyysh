@@ -4,10 +4,11 @@ ShyySH
 Core
 """
 
-import yaml
+import logging
 import shutil
 from pathlib import Path
-import logging
+
+import yaml
 
 __all__ = ["config", "logger"]
 
@@ -28,14 +29,11 @@ if not config["db"]["path"]:
     _db_path.touch(exist_ok=True)
     config["db"]["path"] = str(_conf_dir / "connections.db")
 
-if not config["log"]["dir"]:
-    _log_dir = _conf_dir
-else:
-    _log_dir = Path(config["log"]["dir"])
+_log_dir = _conf_dir if not config["log"]["dir"] else Path(config["log"]["dir"])
 
 logging.basicConfig(
-    format="%(asctime)s.%(msecs)03d %(levelname)s %(message)s",
-    datefmt="%x %X",
+    format=r"%(asctime)s.%(msecs)03d %(levelname)s %(message)s",
+    datefmt=r"%x %X",
     filename=_log_dir / "shyysh.log",
     level=config["log"]["level"],
     encoding="utf-8",

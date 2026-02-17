@@ -5,7 +5,8 @@ Models
 """
 
 import yaml
-from tinydb import TinyDB, Storage
+from tinydb import Storage, TinyDB
+
 from shyysh.core import config, logger
 
 __all__ = ["ConnectionItem"]
@@ -70,21 +71,15 @@ class ConnectionItem:
     def get(self, doc_id: int, as_dict=False):
         _r = self._db.get(doc_id=doc_id)
         if as_dict:
-            return {**self._default, **dict(_r)}
+            return {**self._default, **dict(_r)} # type: ignore
         return _r
 
     def get_current(self, as_dict=False):
-        if self.cursor:
-            _r = self.get(self.cursor, as_dict=as_dict)
-        else:
-            _r = self._default
+        _r = self.get(self.cursor, as_dict=as_dict) if self.cursor else self._default
         return _r
 
     def update_current(self, data: dict):
-        if self.cursor:
-            _r = self.update(doc_ids=(self.cursor,), data=data)[0]
-        else:
-            _r = self.add(data=data)
+        _r = self.update(doc_ids=(self.cursor,), data=data)[0] if self.cursor else self.add(data=data)
         self.reorder()
         self.cursor = _r
         return self.cursor
@@ -92,7 +87,7 @@ class ConnectionItem:
     def summary(self):
         _r = []
         for item in self.all():
-            _r.append((item["title"], item.doc_id))
+            _r = [*_r, (item["title"], item.doc_id)]
         return _r
 
     def reorder(self):
@@ -106,7 +101,7 @@ class ConnectionItem:
                 _s = 1000
             return _s
 
-        _items.sort(key=lambda i: _sort(i))
+        _items.sort(key=_sort)
 
         self._db.drop_tables()
         self._db.insert_multiple(_items)

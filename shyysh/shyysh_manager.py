@@ -6,30 +6,32 @@ TUI
 """
 
 import sys
-from asciimatics.widgets import (
-    Frame,
-    ListBox,
-    Layout,
-    Divider,
-    Text,
-    Button,
-    Widget,
-    CheckBox,
-    PopUpDialog,
-)
-from asciimatics.scene import Scene
-from asciimatics.screen import Screen, ManagedScreen
+from typing import Any, cast
+
+import libtmux
 from asciimatics.event import KeyboardEvent
 from asciimatics.exceptions import (
-    ResizeScreenError,
     NextScene,
+    ResizeScreenError,
     StopApplication,
 )
-import libtmux
+from asciimatics.scene import Scene
+from asciimatics.screen import ManagedScreen, Screen
+from asciimatics.widgets import (
+    Button,
+    CheckBox,
+    Divider,
+    Frame,
+    Layout,
+    ListBox,
+    PopUpDialog,
+    Text,
+    Widget,
+)
 
 from shyysh.core import config, logger
-from shyysh.util import get_current_pane, make_shell_cmd
 from shyysh.models import ConnectionItem
+from shyysh.util import get_current_pane, make_shell_cmd
 
 
 class ListView(Frame):
@@ -52,9 +54,7 @@ class ListView(Frame):
         if not self._pane:
             logger.critical("Please start using shyysh_main.py")
             raise Exception("Tmux not found")
-        self._session = self._tmux_server.sessions.get(
-            session_id=self._pane["session_id"]
-        )
+        self._session = self._tmux_server.sessions.get(session_id=self._pane["session_id"])
 
         # Widgets
         self.set_theme(config["tui"]["theme"])
@@ -95,18 +95,19 @@ class ListView(Frame):
 
     def _connect(self):
         self.save()
+        if not self.data or not self._session:
+            return
+
         _conn_id = self.data["connections"]
 
         if not _conn_id:
             return
 
         self._model.cursor = _conn_id
-        _conn = self._model.get_current(as_dict=True)
-        _conn_cmd = make_shell_cmd(_conn)
+        conn = cast("dict[str, Any]", self._model.get_current(as_dict=True))
+        _conn_cmd = make_shell_cmd(conn)
         logger.debug(f'Connecting to {_conn_id} -- "{_conn_cmd}"')
-        self._session.new_window(
-            f'{_conn["title"]}', attach=True, window_shell=_conn_cmd
-        )
+        self._session.new_window(f"{conn['title']}", attach=True, window_shell=_conn_cmd)
 
     def _on_pick(self):
         _value = self._list_view.value
@@ -116,7 +117,7 @@ class ListView(Frame):
         self._connect_button.disabled = _value is None
 
         if _value:
-            _conn = self._model.get(_value, as_dict=True)
+            _conn = cast("dict[str, Any]", self._model.get(doc_id=_value, as_dict=True))
             _conn_cmd = make_shell_cmd(_conn)
             self._info_panel.value = _conn_cmd
         else:
@@ -132,6 +133,8 @@ class ListView(Frame):
 
     def _edit(self):
         self.save()
+        if not self.data:
+            return
         _conn_id = self.data["connections"]
 
         if not _conn_id:
@@ -143,19 +146,23 @@ class ListView(Frame):
 
     def _copy(self):
         self.save()
+        if not self.data:
+            return
         _conn_id = self.data["connections"]
 
         if not _conn_id:
             return
 
         logger.debug(f"Connection {_conn_id} -- Copy")
-        _conn = self._model.get(doc_id=_conn_id, as_dict=True)
+        _conn = cast("dict[str, Any]", self._model.get(doc_id=_conn_id, as_dict=True))
         _conn["title"] += " #copy"
         self._model.add(_conn)
         self._reload_list()
 
     def _delete(self):
         self.save()
+        if not self.data or not self._scene:
+            return
         _conn_id = self.data["connections"]
 
         if not _conn_id:
@@ -174,6 +181,8 @@ class ListView(Frame):
     def _delete_confirm(self, value):
         if value != 0:
             return
+        if not self.data:
+            return
         _conn_id = self.data["connections"]
 
         if not _conn_id:
@@ -187,7 +196,7 @@ class ListView(Frame):
         if isinstance(event, KeyboardEvent):
             if event.key_code in [ord("q"), ord("Q")]:
                 self._quit_confirmation()
-            elif event.key_code in [Screen.ctrl("c")]:
+            elif event.key_code in [Screen.ctrl("c"), Screen.ctrl("d")]:
                 self._immediate_quit()
             elif event.key_code in [ord("e"), ord("E")]:
                 self._edit()
@@ -203,6 +212,8 @@ class ListView(Frame):
         return super().process_event(event)
 
     def _quit_confirmation(self):
+        if not self._scene:
+            return
         self._scene.add_effect(
             PopUpDialog(
                 self._screen,
@@ -242,9 +253,7 @@ class ConnectionView(Frame):
         layout = Layout([100], fill_frame=True)
         self.add_layout(layout)
         layout.add_widget(Text("Title:", "title", validator=r"^(\S*)$"))
-        layout.add_widget(
-            Text("User:", "user", validator=r"^([A-Za-z0-9].*)$|^$")
-        )
+        layout.add_widget(Text("User:", "user", validator=r"^([A-Za-z0-9].*)$|^$"))
         layout.add_widget(Text("Host:", "host", validator=r"^(\S*)$"))
         layout.add_widget(
             Text(
@@ -257,18 +266,14 @@ class ConnectionView(Frame):
         layout.add_widget(CheckBox("-C", "Compression", "compression"))
         layout.add_widget(CheckBox("-X", "Forward X", "fwd_x"))
         layout.add_widget(CheckBox("-A", "Forward Agent", "fwd_a"))
-        layout.add_widget(
-            CheckBox("-g", "Allow Remote Port Conn", "allow_rpc")
-        )
+        layout.add_widget(CheckBox("-g", "Allow Remote Port Conn", "allow_rpc"))
         layout.add_widget(CheckBox("-N", "No exec", "no_exec"))
         layout.add_widget(Divider())
         layout.add_widget(Text("Custom options:", "custom_opt"))
         layout.add_widget(Text("Prepend command:", "prepend_cmd"))
         layout.add_widget(Text("Append command:", "append_cmd"))
         layout.add_widget(Divider(height=3))
-        layout.add_widget(
-            Text("Sort order:", "sort", validator=r"^(\d){0,4}$|^$")
-        )
+        layout.add_widget(Text("Sort order:", "sort", validator=r"^(\d){0,4}$|^$"))
 
         layout2 = Layout([1, 1, 1, 1])
         self.add_layout(layout2)
@@ -286,9 +291,8 @@ class ConnectionView(Frame):
         raise NextScene("Main")
 
     def process_event(self, event):
-        if isinstance(event, KeyboardEvent):
-            if event.key_code in [Screen.KEY_ESCAPE]:
-                self._cancel()
+        if isinstance(event, KeyboardEvent) and event.key_code == Screen.KEY_ESCAPE:
+            self._cancel()
 
         return super().process_event(event)
 
@@ -312,14 +316,13 @@ class ShyySH:
                 name="Edit Connection",
             ),
         ]
-        screen.play(
-            scenes, stop_on_resize=True, start_scene=scene, allow_int=True
-        )
+        screen.play(scenes, stop_on_resize=True, start_scene=scene, allow_int=True)
 
     @ManagedScreen
     def run(self, screen=None):
         while True:
             try:
+                assert screen is not None, "Screen is required"
                 screen.wrapper(
                     self.play,
                     catch_interrupt=True,
