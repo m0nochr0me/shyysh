@@ -20,17 +20,17 @@ Secure Shell (SSH) connection manager with TUI
 
 ### Archlinux
 
-```commandline
+```sh
 yay -S shyysh-git
 ```
 
-### Manual 
+### Manual
 
 Ensure you have installed [tmux](https://github.com/tmux/tmux) in your os.
 
 Install python packages from `requirements.txt`
 
-```commandline
+```sh
 python setup.py build
 
 python setup.py install
@@ -38,19 +38,19 @@ python setup.py install
 
 ## Run
 
-```commandline
+```sh
 shyysh
 ```
 
-While being run outside existing tmux session it will start one, 
+While being run outside existing tmux session it will start one,
 otherwise shyysh will be started in newly created tmux window.
 
 ## Notes
 
-You may want to change default command key binding in `tmux.conf` to avoid conflicts when tmux session 
+You may want to change default command key binding in `tmux.conf` to avoid conflicts when tmux session
 being run inside another:
 
-```
+```text
 unbind C-b
 set -g prefix C-a
 bind C-a send-prefix
@@ -58,7 +58,7 @@ bind C-a send-prefix
 
 ---
 
-Validation in 'Connection Edit' frame is for informational purposes only - it will not disallow 
+Validation in 'Connection Edit' frame is for informational purposes only - it will not disallow
 saving unexecutable profiles.
 
 ---
@@ -68,12 +68,11 @@ Default location for config file and DB: `~/.config/shyysh`
 ## Why ShyySH?
 
 > Видишь ящики - грузи в ящики
-> 
+>
 > ...
-> 
+>
 > Сломаешь шиш - получишь десятку
-
 
 ## Issues
 
-- Sometimes terminal color scheme is being reset when resizing window.
+* Sometimes terminal color scheme is being reset when resizing window.
